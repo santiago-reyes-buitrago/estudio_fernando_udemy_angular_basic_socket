@@ -1,0 +1,45 @@
+<nav class="bg-blue-600 p-4 shadow-lg">
+  <div class="container mx-auto flex justify-between items-center">
+    <!-- Logo -->
+    <div class="text-white font-bold text-xl">
+      <a href="#" class="hover:text-blue-200">MyApp</a>
+    </div>
+
+    <!-- Desktop Menu -->
+    <div class="hidden md:flex space-x-6">
+      <a href="#" class="text-white hover:text-blue-200 transition duration-300">Home</a>
+      <a href="#" class="text-white hover:text-blue-200 transition duration-300">About</a>
+      <a href="#" class="text-white hover:text-blue-200 transition duration-300">Services</a>
+      <a href="#" class="text-white hover:text-blue-200 transition duration-300">Contact</a>
+      <p class="block text-white hover:text-blue-200 py-2">
+        Server Status:
+        <span [class.text-green-500]="serverStatus()" [class.text-red-500]="!serverStatus()">
+        {{ serverStatus() ? "En linea" : "Desconectado" }}
+      </span>
+      </p>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <div class="md:hidden">
+      <button id="menu-btn" class="text-white focus:outline-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="md:hidden hidden mt-4 space-y-2">
+    <a href="#" class="block text-white hover:text-blue-200 py-2">Home</a>
+    <a href="#" class="block text-white hover:text-blue-200 py-2">About</a>
+    <a href="#" class="block text-white hover:text-blue-200 py-2">Services</a>
+    <a href="#" class="block text-white hover:text-blue-200 py-2">Contact</a>
+    <p class="block text-white hover:text-blue-200 py-2">
+      Server Status:
+      <span [class.text-green-500]="serverStatus()" [class.text-red-500]="!serverStatus()">
+        {{ serverStatus() ? "En linea" : "Desconectado" }}
+      </span>
+    </p>
+  </div>
+</nav>
