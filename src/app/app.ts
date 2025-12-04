@@ -2,10 +2,11 @@ import {Component, inject, OnInit} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {NavbarComponent} from '../shared/ui/navbar/navbar.component';
 import {ChatService} from '../chat/services/chat.service';
+import {ChatComponent} from '../chat/components/chat/chat.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarComponent],
+  imports: [RouterOutlet, NavbarComponent, ChatComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
