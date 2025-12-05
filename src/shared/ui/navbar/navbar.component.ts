@@ -1,12 +1,9 @@
 import {Component, computed, inject} from '@angular/core';
 import {WebsocketService} from '../../../websockets/services/websocket.service';
-import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'ui-navbar',
-  imports: [
-    NgClass
-  ],
+  imports: [],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
