@@ -1,5 +1,6 @@
 import {inject, Injectable, signal} from '@angular/core';
 import {Socket} from 'ngx-socket-io';
+import {User} from '../models/user.model';
 
 const SOCKETS_EVENTS = {
   CONNECT: 'connect',
@@ -12,6 +13,7 @@ const SOCKETS_EVENTS = {
 export class WebsocketService {
   private socket = inject(Socket);
   socketStatus = signal<boolean>(false)
+  user = signal<User|null>(null);
 
   constructor() {
     this.checkStatus();
@@ -35,5 +37,12 @@ export class WebsocketService {
 
   listenEvent<T>(event: string){
     return this.socket.fromEvent<T>(event);
+  }
+
+  loginWs(name: string){
+    console.log('login',name);
+    this.emitEvent<any>('login',{name},(res:any)=> {
+      console.log('login exitoso',res);
+    })
   }
 }
