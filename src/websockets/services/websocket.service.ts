@@ -1,11 +1,14 @@
 import {inject, Injectable, signal} from '@angular/core';
 import {Socket} from 'ngx-socket-io';
 import {User} from '../models/user.model';
+import {from} from 'rxjs';
 
 const SOCKETS_EVENTS = {
   CONNECT: 'connect',
   DISCONNECT: 'disconnect'
 }
+
+const USER_STORAGE_NAME = 'user';
 
 @Injectable({
   providedIn: 'root',
@@ -13,10 +16,11 @@ const SOCKETS_EVENTS = {
 export class WebsocketService {
   private socket = inject(Socket);
   socketStatus = signal<boolean>(false)
-  user = signal<User|null>(null);
+  user = signal<User | null>(null);
 
   constructor() {
     this.checkStatus();
+    this.recoverDataLocalStorage();
   }
 
   checkStatus() {
@@ -32,17 +36,31 @@ export class WebsocketService {
   }
 
   emitEvent<T>(event: string, payload?: T | any, callback?: Function) {
-    this.socket.emit(event, payload,callback);
+    this.socket.emit(event, payload, callback);
   }
 
-  listenEvent<T>(event: string){
+  listenEvent<T>(event: string) {
     return this.socket.fromEvent<T>(event);
   }
 
-  loginWs(name: string){
-    console.log('login',name);
-    this.emitEvent<any>('login',{name},(res:any)=> {
-      console.log('login exitoso',res);
-    })
+  loginWs(name: string) {
+    console.log('login', name);
+    return from(new Promise((resolve, reject) => {
+      this.emitEvent<any>('login', {name}, (res: any) => {})
+      this.user.set(new User(name))
+      this.saveDataLocalStorage();
+      resolve('login exitoso');
+    }))
+  }
+
+  saveDataLocalStorage() {
+    localStorage.setItem(USER_STORAGE_NAME, JSON.stringify(this.user()));
+  }
+
+  recoverDataLocalStorage() {
+    const user: User|null = JSON.parse(localStorage.getItem(USER_STORAGE_NAME)!) ?? null;
+    if (user) {
+      this.user.set(user)
+    }
   }
 }

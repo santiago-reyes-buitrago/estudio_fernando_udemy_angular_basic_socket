@@ -1,6 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {WebsocketService} from '../../../websockets/services/websocket.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'auth-login',
@@ -14,6 +15,7 @@ import {WebsocketService} from '../../../websockets/services/websocket.service';
 export class LoginPage {
   private fb =  inject(FormBuilder);
   private websockerService = inject(WebsocketService);
+  private router = inject(Router)
   loginForm = this.fb.group({
     username: ['',[Validators.required]],
   })
@@ -24,6 +26,11 @@ export class LoginPage {
       alert('Datos invalidos')
       return;
     }
-    this.websockerService.loginWs(this.loginForm.value.username!)
+    this.websockerService.loginWs(this.loginForm.value.username!).subscribe({
+      next: (value) => {
+        console.log({value});
+        this.router.navigate(['chat']);
+      }
+    })
   }
 }
