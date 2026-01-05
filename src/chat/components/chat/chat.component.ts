@@ -14,13 +14,15 @@ import {Subscription} from 'rxjs';
 export class ChatComponent implements OnInit, OnDestroy {
   private readonly messageContainer = viewChild<ElementRef>('messagesContainer');
   private readonly chatService = inject(ChatService);
+  from = signal<string>('');
   messages = signal<string[]>([]);
   message = '';
   subscriptionMessage!: Subscription;
 
   ngOnInit(): void {
     this.subscriptionMessage = this.chatService.listenMessage().pipe().subscribe({
-      next: message => {
+      next: ({message,from}) => {
+        this.from.set(from);
         this.messages.update(messages => [...messages, message])
         setTimeout(() => {
           this.messageContainer()!.nativeElement.scrollTop = this.messageContainer()?.nativeElement.scrollHeight;

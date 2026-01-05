@@ -61,6 +61,7 @@ export class WebsocketService {
     const user: User|null = JSON.parse(localStorage.getItem(USER_STORAGE_NAME)!) ?? null;
     if (user) {
       this.user.set(user)
+      this.loginWs(user.name)
     }
   }
 }
